@@ -62,6 +62,14 @@ defmodule Bamboo.SendGridAdapter do
   defp get_key(config) do
     case Map.get(config, :api_key) do
       nil -> raise_api_key_error(config)
+      {:system, name} -> get_key_from_env(config, name)
+      key -> key
+    end
+  end
+
+  defp get_key_from_env(config, name) do
+    case System.get_env(name) do
+      nil -> raise_api_key_error(config)
       key -> key
     end
   end
