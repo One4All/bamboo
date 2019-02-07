@@ -13,6 +13,7 @@ defmodule Bamboo.SendGridHelper do
   alias Bamboo.Email
 
   @id_size 36
+  @new_id_size 34
   @field_name :send_grid_template
 
   @doc """
@@ -25,7 +26,7 @@ defmodule Bamboo.SendGridHelper do
       |> with_template("80509523-83de-42b6-a2bf-54b7513bd2aa")
   """
   def with_template(email, template_id) do
-    if byte_size(template_id) == @id_size do
+    if (byte_size(template_id) == @id_size || byte_size(template_id) == @new_id_size) do
       template = Map.get(email.private, @field_name, %{})
       email
       |> Email.put_private(@field_name, set_template(template, template_id))
